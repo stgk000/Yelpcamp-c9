@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+<div class="container">
+    <div class="row">
+         <h1><center>Add New Comment to <%= camp.name %></center></h1>
+         <div id="form-handle">
+            <form action="/campgrounds/<%= camp._id %>/comments" method="POST">
+                <textarea required class="form-control spacing-border" maxlength="200" rows="3" name="comment[text]" placeholder="Type Your Comment"></textarea>
+                <button class="btn btn-lg btn-block submit-btn"> Submit! </button>
+            </form>
+            <a class = "spacing-border" href="/campgrounds/<%= camp._id %>">Go Back</a>
+         </div>
+    </div>
+</div>
+
+
+<% include ../partials/footer %>

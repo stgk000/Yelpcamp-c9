@@ -1,0 +1,18 @@
+<% include ../partials/header %>
+<div class="container">
+    <div class="row">
+         <h1><center>Edit a <%= camp.name %> CampGround</center></h1>
+         <div id="form-handle">
+            <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST">
+                <input required class="form-control spacing-border" type = "text" name ="camp[name]" value="<%= camp.name %>">
+                <input required class="form-control spacing-border" type = "text" name ="camp[image]" value="<%= camp.image %>">
+                <input requires required class="form-control spacing-border" type = "price" name ="camp[price]" min="0.1" step="0.1" value= "<%= camp[price] %>">
+                <textarea required class="form-control spacing-border" maxlength="1100" rows="3" name="camp[desc]"><%= camp.desc %></textarea>
+                <button class="btn btn-lg btn-block submit-btn"> Submit! </button>
+            </form>
+            <a class = "spacing-border" href="/">Go Back</a>
+         </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>

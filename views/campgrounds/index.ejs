@@ -1,0 +1,32 @@
+<% include ../partials/header %>
+
+<div class = "container">
+    <!-- For Header -->
+    <header class = "jumbotron">
+        <div class="container">
+            <h1>Welcome to YelpCamp</h1>
+            <p>Te best Camp Grounds you can hope for</p>
+            <p>
+                <a class = "btn btn-primary btn-lg" href = "/campgrounds/new" >Add New Camp</br></a>
+            </p>
+        </div>
+    </header>
+    <!--Iterting through the data that is passed on-->
+    <div class = "row text-center flex-display">
+        <% camps.forEach(function(camp){ %>
+            <div class = "col-md-3 col-sm-6">
+                <div class = "thumbnail">
+                    <img id="onlyonimage" src = "<%= camp.image %>" >
+                    <div class = "caption">
+                        <em><%= camp.name %></em>
+                    </div>
+                    <p>
+                        <a href="/campgrounds/<%= camp._id %>" class="btn btn-info">More Info</a>
+                    </p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<% include ../partials/footer %>
