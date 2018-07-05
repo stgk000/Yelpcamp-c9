@@ -1,11 +1,17 @@
 /*img {*/
+
+
 /*    height: 300px;*/
+
+
 /*    width: 500px;*/
+
+
 /*}*/
 
 .submit-btn {
-	background-color: #b1dbff;
-	margin: 10px 0 10px 0;
+    background-color: #b1dbff;
+    margin: 10px 0 10px 0;
 }
 
 .spacing-border {
@@ -17,7 +23,7 @@
     margin: 30px auto;
 }
 
-.thumbnail img{
+.thumbnail img {
     width: 100%;
     height: 100%;
 }
@@ -28,7 +34,7 @@
 }
 
 .thumbnail {
-     padding: 0;
+    padding: 0;
 }
 
 .flex-display {
@@ -43,4 +49,9 @@
 .flash-msg {
     text-align: center;
     border-radius: 10px;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
 }
