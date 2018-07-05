@@ -9,6 +9,7 @@ var express = require("express"),
     expressSession = require("express-session"),
     User = require("./models/user"),
     methodOverride = require("method-override"),
+    moment = require("moment"),
     seedDB = require("./seeds");
 
 //Routes
@@ -21,6 +22,7 @@ var commentRoutes = require("./routes/comments"),
 mongoose.connect("mongodb://localhost/yelpcampv12");
 
 app.use(flash());
+app.locals.moment = require("moment");
 app.use(expressSession({
     secret: "camping",
     resave: false,
