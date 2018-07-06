@@ -6,11 +6,17 @@
                     <%= camp.name %> CampGround</center>
             </h1>
             <div id="form-handle">
-                <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST">
+                <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
                     <input required class="form-control spacing-border" type="text" name="camp[name]" value="<%= camp.name %>">
-                    <input required class="form-control spacing-border" type="text" name="camp[image]" value="<%= camp.image %>">
+                    <div class="spacing-border">
+                        <label for="image">image</label>
+                        <input id="image" accept="image/*" type="file" class="btn" name="camp[image]">
+                    </div>
                     <input requires required class="form-control spacing-border" type="price" name="camp[price]" min="0.1" step="0.1" value="<%= camp.price %>">
-                    <input required class="form-control spacing-border" type="text" name="camp[location]" value="<%= camp.location %>">
+                    <div class="spacing-border">
+                        <lable for="location">location</lable>
+                        <input required class="form-control spacing-border" type="text" name="location" id="location" value="<%= camp.location %>">
+                    </div>
                     <textarea required class="form-control spacing-border" maxlength="1100" rows="3" name="camp[desc]"><%= camp.desc %></textarea>
                     <button class="btn btn-lg btn-block submit-btn"> Submit! </button>
                 </form>

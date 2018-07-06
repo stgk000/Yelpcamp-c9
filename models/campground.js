@@ -4,6 +4,7 @@ var Comment = require("./comment")
 var campSchema = new mongoose.Schema({
     name: String,
     image: String,
+    imageId: String,
     desc: String,
     price: Number,
     location: String,

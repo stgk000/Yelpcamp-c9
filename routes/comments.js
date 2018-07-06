@@ -69,7 +69,7 @@ router.get("/:comment_id/edit", middleware.isLoggedIn, middleware.checkOwnerComm
 //update comment
 router.put("/:comment_id", middleware.isLoggedIn, middleware.checkOwnerComment, function(req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
-        if (!err && updatedComment) {
+        if (!err) {
             req.flash("info", "You have updated the comment")
             res.redirect("/campgrounds/" + req.params.id);
         } else {
