@@ -144,26 +144,42 @@ router.get("/:id/edit", middleware.isLoggedIn, middleware.checkOwner, function(r
 });
 
 //update
-router.put("/:id", middleware.isLoggedIn, middleware.checkOwner, upload.single('image'), function(req, res) {
-    geocoder.geocode(req.body.location, function(err, data) {
-        if (err || !data.length) {
-            req.flash('error', 'Invalid address');
-            return res.redirect('back');
-        } else {
-            req.body.camp.lat = data[0].latitude;
-            req.body.camp.lng = data[0].longitude;
-            req.body.camp.location = data[0].formattedAddress;
-            Campground.findByIdAndUpdate(req.params.id, req.body.camp, function(err, updatedCampground) {
-                if (!err && updatedCampground) {
-                    req.flash("info", "You updated the campground");
-                    res.redirect("/campgrounds/" + req.params.id);
-                } else {
-                    console.log(err);
-                    req.flash("error", err.message);
-                    res.redirect("back");
+router.put("/:id", middleware.isLoggedIn, middleware.checkOwner, upload.single('image'), async function(req, res) {
+    try {
+        let data = await geocoder.geocode(req.body.location)
+        req.body.camp.lat = data[0].latitude;
+        req.body.camp.lng = data[0].longitude;
+        req.body.camp.location = data[0].formattedAddress;
+    } catch (err) {
+        req.flash('error', 'Invalid address');
+        return res.redirect('back');
+    }
+    Campground.findById(req.params.id, async function(err, campground) {
+        if (!err && campground) {
+            console.log(campground);
+            console.log(req.body.camp);
+            if (req.file) {
+                try {
+                    await cloudinary.v2.uploader.destroy(campground.imageId);
+                    let result = await cloudinary.v2.uploader.upload(req.file.path);
+                    campground.image = result.secure_url;
+                    campground.imageId = result.public_id;
+                } catch (err) {
+                    req.flash('error', err.message);
+                    return res.redirect('back');
                 }
+            }
+            campground.name = req.body.camp.name;
+            campground.desc = req.body.camp.desc;
+            campground.price = req.body.camp.price;
 
-            });
+            campground.save();
+            req.flash("info", "You have Updated the campground");
+            res.redirect("/campgrounds/" + req.params.id);
+        } else {
+            console.log(err);
+            req.flash("error", err.message);
+            res.redirect("back");
         }
     });
 });

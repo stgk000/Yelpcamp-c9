@@ -9,8 +9,8 @@
                 <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
                     <input required class="form-control spacing-border" type="text" name="camp[name]" value="<%= camp.name %>">
                     <div class="spacing-border">
-                        <label for="image">image</label>
-                        <input id="image" accept="image/*" type="file" class="btn" name="camp[image]">
+                        <label>image</label>
+                        <input id="image" accept="image/*" type="file" class="btn" name="image">
                     </div>
                     <input requires required class="form-control spacing-border" type="price" name="camp[price]" min="0.1" step="0.1" value="<%= camp.price %>">
                     <div class="spacing-border">
