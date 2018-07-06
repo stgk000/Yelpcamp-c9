@@ -2,8 +2,9 @@
     <div class="container">
         <div class="row">
             <h1>
-                <center>Edit a
-                    <%= camp.name %> CampGround</center>
+                <center>Edit the
+                    <%= camp.name %>
+                </center>
             </h1>
             <div id="form-handle">
                 <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" enctype="multipart/form-data">

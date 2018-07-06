@@ -50,12 +50,31 @@ var geocoder = nodeGeocoder(options);
 
 //index page
 router.get("/", function(req, res) {
-    Campground.find({}, function(err, camps) {
-        if (!err) {
-            console.log("find Working");
-            res.render("campgrounds/index", { camps: camps, page: "campgrounds" });
-        }
-    });
+    if (req.query.search) {
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Campground.find({ name: regex }, function(err, camps) {
+            if (!err) {
+                if (camps.length < 1) {
+                    req.flash("error", "No campgrounds found");
+                    return res.redirect("/campgrounds")
+                }
+                res.render("campgrounds/index", {
+                    camps: camps,
+                    page: "campgrounds"
+                });
+            }
+        });
+    } else {
+        Campground.find({}, function(err, camps) {
+            if (!err) {
+                console.log("find Working");
+                res.render("campgrounds/index", {
+                    camps: camps,
+                    page: "campgrounds"
+                });
+            }
+        });
+    }
 });
 
 //image upload
@@ -156,8 +175,6 @@ router.put("/:id", middleware.isLoggedIn, middleware.checkOwner, upload.single('
     }
     Campground.findById(req.params.id, async function(err, campground) {
         if (!err && campground) {
-            console.log(campground);
-            console.log(req.body.camp);
             if (req.file) {
                 try {
                     await cloudinary.v2.uploader.destroy(campground.imageId);
@@ -186,15 +203,27 @@ router.put("/:id", middleware.isLoggedIn, middleware.checkOwner, upload.single('
 
 //delete
 router.delete("/:id", middleware.isLoggedIn, middleware.checkOwner, function(req, res) {
-    Campground.findByIdAndRemove(req.params.id, function(err) {
-        if (!err) {
-            req.flash("info", "You deleted the campground");
-            res.redirect("/campgrounds");
+    Campground.findById(req.params.id, async function(err, campground) {
+        if (!err && campground) {
+            try {
+                await cloudinary.v2.uploader.destroy(campground.imageId);
+                campground.remove();
+                req.flash("info", "You have deleted the campground");
+                res.redirect("/campgrounds");
+            } catch (err) {
+                req.flash('error', err.message);
+                return res.redirect('back');
+            }
         } else {
-            req.flash("error", "Something's not right");
+            console.log(err);
+            req.flash("error", err.message);
             res.redirect("back");
         }
     })
 })
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
