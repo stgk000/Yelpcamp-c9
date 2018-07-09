@@ -19,7 +19,7 @@ var commentRoutes = require("./routes/comments"),
 
 // seedDB();     //comment or uncomment the seedDB to restart the database
 
-mongoose.connect("mongodb://localhost/yelpcampv12");
+mongoose.connect(process.env.DB);
 
 app.use(flash());
 app.locals.moment = require("moment");
@@ -52,6 +52,6 @@ app.use(authRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 app.use("/campgrounds", campgroundRoutes);
 
-app.listen(3000, function() {
+app.listen(process.env.PORT, process.env.IP, function() {
     console.log("How U Doing! listening at port 3000");
 })
